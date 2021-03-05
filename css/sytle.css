@@ -1,0 +1,24 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.page-container {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1 {
+  text-align: center;
+  padding: 30px;
+}
+
+.chart-container {
+  display: block;
+  position: relative;
+  width: 50vw;
+  height: 50vh;
+  margin-left: auto;
+  margin-right: auto;
+}
