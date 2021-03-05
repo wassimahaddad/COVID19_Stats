@@ -1,4 +1,4 @@
-//! Variables ------------------------------------------------------------------
+//! Variables, arrays and Objects ---------------------------------------------
 const countrie_API = "https://restcountries.herokuapp.com/api/v1";
 const COVID_API = "https://corona-api.com/countries";
 const proxy = "https://cors.bridged.cc/";
@@ -18,24 +18,9 @@ let deaths = []; // a dymanically assigned dead cases array
 let singleCountryStats = {}; //a dynamically assigned object with single-country stats
 
 //! Functions------------------------------------------------------------------
-// Receive country list with region--------------------------------------------
 
-async function getRegion() {
-  const result = await fetch(`${proxy}${countrie_API}`);
-  const parsed = await result.json();
-  // structure:  parsed object >> array of 250 objects >>  object of country objects >> country data object
-  for (i = 0; i < Object.entries(parsed).length; i++) {
-    const tempObj = {};
-    tempObj.name = parsed[i].name.common;
-    tempObj.code = parsed[i].cca2;
-    tempObj.continent = parsed[i].region;
-    codeAndRegionArr.push(tempObj);
-  }
-  console.log(codeAndRegionArr);
-  getCovidData();
-}
+// Return the continent from the "codeAndRegionArr" array according to the country code --------
 
-// Return the constinent according to the country code ---------------------------
 function getContinentByCode(code) {
   for (let i = 0; i < codeAndRegionArr.length; i++) {
     if (Object.values(codeAndRegionArr[i]).includes(code)) {
@@ -44,7 +29,7 @@ function getContinentByCode(code) {
   }
 }
 
-//Receive covid stats, filter all relevant data and store in "covidData" array of country objects
+//fetch COVID19 stats, filter all relevant data and store in "covidData" array of country objects
 
 function getCovidData() {
   fetch(COVID_API)
@@ -65,6 +50,23 @@ function getCovidData() {
       console.log(covidData);
     });
 }
+
+// fetch country list with region--------------------------------------------
+
+async function getRegion() {
+  const result = await fetch(`${proxy}${countrie_API}`);
+  const parsed = await result.json();
+  for (i = 0; i < Object.entries(parsed).length; i++) {
+    const tempObj = {};
+    tempObj.name = parsed[i].name.common;
+    tempObj.code = parsed[i].cca2;
+    tempObj.continent = parsed[i].region;
+    codeAndRegionArr.push(tempObj);
+  }
+  console.log(codeAndRegionArr);
+  getCovidData(); // call covid data fetch
+}
+
 getRegion(); //get all data when page loads
 
 //Reset the content of the stats arrays--------------------------------------------
