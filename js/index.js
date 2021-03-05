@@ -1,23 +1,24 @@
-const proxy = "https://cors.bridged.cc/";
-// const proxy = "https://cors-anywhere.herokuapp.com/";
-//https://restcountries.herokuapp.com/api/v1/region/:region_name
+//! Variables ------------------------------------------------------------------
 const countrie_API = "https://restcountries.herokuapp.com/api/v1";
 const COVID_API = "https://corona-api.com/countries";
-
+const proxy = "https://cors.bridged.cc/";
 const codeAndRegionArr = []; //an array of country objects with name, code and continent
 const covidData = []; //an array of country objects with covid data - no continent
 const contryData = []; //an array of country objects with covid data and continent
-let asia = [];
-let europe = [];
-let africa = [];
-let americas = [];
-let oceania = [];
-let confirmed = [];
-let recovered = [];
-let critical = [];
-let deaths = [];
+let asia = []; //an array of countries in Asia
+let europe = []; //an array of countries in Europe
+let africa = []; //an array of countries in Africa
+let americas = []; //an array of countries in Americas
+let oceania = []; //an array of countries in Oceania
+let allCountries = []; //an array of all countries
+let confirmed = []; // a dymanically assigned confirmed cases array
+let recovered = []; // a dymanically assigned recovered cases array
+let critical = []; // a dymanically assigned critical cases array
+let deaths = []; // a dymanically assigned dead cases array
+let singleCountryStats = {}; //a dynamically assigned object with single-country stats
 
-// ------------------- receive country list with region--------------------------------------------
+//! Functions------------------------------------------------------------------
+// Receive country list with region--------------------------------------------
 
 async function getRegion() {
   const result = await fetch(`${proxy}${countrie_API}`);
@@ -34,7 +35,7 @@ async function getRegion() {
   getCovidData();
 }
 
-// ---------------- return the constinent according to the country code -------------------------
+// Return the constinent according to the country code ---------------------------
 function getContinentByCode(code) {
   for (let i = 0; i < codeAndRegionArr.length; i++) {
     if (Object.values(codeAndRegionArr[i]).includes(code)) {
@@ -43,7 +44,7 @@ function getContinentByCode(code) {
   }
 }
 
-// ------------------------- receive covid stats, filter all relevant data and store in "covidData" array of country objects
+//Receive covid stats, filter all relevant data and store in "covidData" array of country objects
 
 function getCovidData() {
   fetch(COVID_API)
@@ -64,15 +65,27 @@ function getCovidData() {
       console.log(covidData);
     });
 }
-getRegion();
+getRegion(); //get all data when page loads
 
-//---------------------- reset the content of the stats arrays
+//Reset the content of the stats arrays--------------------------------------------
 
 function resetStats() {
   confirmed = [];
   recovered = [];
   critical = [];
   deaths = [];
+}
+// World stats---------------------------------------------------------------------
+
+function worldStats() {
+  resetStats();
+  for (let i = 0; i < covidData.length; i++) {
+    allCountries.push(covidData[i].name);
+    confirmed.push(covidData[i].confirmed);
+    recovered.push(covidData[i].recovered);
+    critical.push(covidData[i].critical);
+    deaths.push(covidData[i].deaths);
+  }
 }
 
 // assign the argument the correspoding countries-by-continent array (for use with "segmentByContinent" function)
@@ -97,7 +110,7 @@ function selectContinentArray(arr) {
   return "done";
 }
 
-//   fill the stats arrays with data by continent
+//fill the stats arrays with data by continent--------------------------------------
 
 function segmentByContinent(continent) {
   resetStats();
@@ -116,38 +129,40 @@ function segmentByContinent(continent) {
   return "done";
 }
 
-//create chart
+//Stats by single country-------------------------------------------------------------
 
-xAxis = asia;
-yAxis = confirmed;
+function statsByCounty(country) {
+  singleCountryStats = {};
+  for (i = 0; i < covidData.length; i++) {
+    if (covidData[i].name === country) {
+      console.log(covidData[i]);
+      singleCountryStats = covidData[i];
+    }
+  }
+}
 
-const ctx = document.querySelector("#statChart").getContext("2d");
-const chart = new Chart(ctx, {
-  // The type of chart we want to create
-  type: "line",
+//Draw chart -------------------------------------------------------------------------
 
-  // The data for our dataset
-  data: {
-    labels: xAxis,
-    datasets: [
-      {
-        label: "My First dataset",
-        backgroundColor: "rgb(255, 99, 132)",
-        borderColor: "rgb(255, 99, 132)",
-        data: yAxis,
-      },
-    ],
-  },
+function drawChart(xAxis, yAxis, cat) {
+  const ctx = document.querySelector("#statChart").getContext("2d");
+  const chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: "line",
 
-  // Configuration options go here
-  options: {
-    layout: {
-      padding: {
-        left: 50,
-        right: 0,
-        top: 0,
-        bottom: 0,
-      },
+    // The data for our dataset
+    data: {
+      labels: xAxis,
+      datasets: [
+        {
+          label: `COVID19 ${cat} cases`,
+          backgroundColor: "rgb(255, 99, 132)",
+          borderColor: "rgb(255, 99, 132)",
+          data: yAxis,
+        },
+      ],
     },
-  },
-});
+
+    // Configuration options go here
+    options: {},
+  });
+}
