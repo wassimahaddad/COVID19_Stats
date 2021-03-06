@@ -27,12 +27,6 @@
   animation-timing-function: ease-in;
 }
 
-.message {
-  font-size: 20px;
-  text-align: center;
-  margin-top: 20px;
-}
-
 @keyframes goaround {
   from {
     transform: rotate(0deg);
@@ -41,6 +35,12 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.message {
+  font-size: 20px;
+  text-align: center;
+  margin-top: 20px;
 }
 
 .page-container {
