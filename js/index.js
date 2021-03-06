@@ -350,3 +350,7 @@ countries.addEventListener("click", (e) => {
   document.querySelector(".country-stats-container").classList.remove("hidden");
   createCountryStats(country);
 });
+
+setTimeout(function () {
+  return document.querySelector("#cover").classList.add("hidden");
+}, 3000);
