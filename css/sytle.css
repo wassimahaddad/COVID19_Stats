@@ -7,6 +7,7 @@
 .page-container {
   margin-left: auto;
   margin-right: auto;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 h1 {
@@ -21,4 +22,53 @@ h1 {
   height: 50vh;
   margin-left: auto;
   margin-right: auto;
+}
+.button-container {
+  width: 50vw;
+  height: 10vh;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.geography,
+.stats {
+  display: flex;
+  justify-content: center;
+  height: 50%;
+  padding: 10px;
+  font-size: 20px;
+}
+
+button {
+  width: 80px;
+  height: 30px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.country-container {
+  width: 50vw;
+  height: 40vh;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.asia {
+  color: blueviolet;
+}
+
+.europe {
+  color: chocolate;
+}
+
+.africa {
+  color: crimson;
+}
+
+.americas {
+  color: darkblue;
+}
+.oceania {
+  color: green;
 }

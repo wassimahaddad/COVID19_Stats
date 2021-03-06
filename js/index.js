@@ -10,13 +10,14 @@ let europe = []; //an array of countries in Europe
 let africa = []; //an array of countries in Africa
 let americas = []; //an array of countries in Americas
 let oceania = []; //an array of countries in Oceania
-let allCountries = []; //an array of all countries
+let world = []; //an array of all countries
 let confirmed = []; // a dymanically assigned confirmed cases array
 let recovered = []; // a dymanically assigned recovered cases array
 let critical = []; // a dymanically assigned critical cases array
 let deaths = []; // a dymanically assigned dead cases array
 let singleCountryStats = {}; //a dynamically assigned object with single-country stats
-
+let regions = [];
+let chartState = { continent: [], category: "confirmed" };
 //! Functions------------------------------------------------------------------
 
 // Return the continent from the "codeAndRegionArr" array according to the country code --------
@@ -76,13 +77,14 @@ function resetStats() {
   recovered = [];
   critical = [];
   deaths = [];
+  world = [];
 }
 // World stats---------------------------------------------------------------------
 
 function worldStats() {
   resetStats();
   for (let i = 0; i < covidData.length; i++) {
-    allCountries.push(covidData[i].name);
+    world.push(covidData[i].name);
     confirmed.push(covidData[i].confirmed);
     recovered.push(covidData[i].recovered);
     critical.push(covidData[i].critical);
@@ -145,8 +147,9 @@ function statsByCounty(country) {
 
 //Draw chart -------------------------------------------------------------------------
 
-function drawChart(xAxis, yAxis, cat) {
+function drawChart(xAxis, yAxis, cat, region) {
   const ctx = document.querySelector("#statChart").getContext("2d");
+  region = region.charAt(0).toUpperCase() + region.slice(1);
   const chart = new Chart(ctx, {
     // The type of chart we want to create
     type: "line",
@@ -156,7 +159,7 @@ function drawChart(xAxis, yAxis, cat) {
       labels: xAxis,
       datasets: [
         {
-          label: `COVID19 ${cat} cases`,
+          label: `COVID19 ${cat} cases in ${region}`,
           backgroundColor: "rgb(255, 99, 132)",
           borderColor: "rgb(255, 99, 132)",
           data: yAxis,
@@ -168,3 +171,65 @@ function drawChart(xAxis, yAxis, cat) {
     options: {},
   });
 }
+
+// Create an Object to display data from ------------------
+
+function createObject(region) {
+  if (region === "world") {
+    worldStats();
+  } else {
+    segmentByContinent(region);
+  }
+
+  let continent = [];
+  if (region === "asia") {
+    continent = asia;
+  }
+  if (region === "europe") {
+    continent = europe;
+  }
+  if (region === "africa") {
+    continent = africa;
+  }
+  if (region === "americas") {
+    continent = americas;
+  }
+  if (region === "oceania") {
+    continent = asia;
+  }
+  if (region === "oceania") {
+    continent = asia;
+  }
+  if (region === "world") {
+    continent = world;
+  }
+
+  return {
+    region: region,
+    countries: continent,
+    category: {
+      confirmed: confirmed,
+      recovered: recovered,
+      critical: critical,
+      deaths: deaths,
+    },
+  };
+}
+
+//!Event Listeners----------------------------------------
+
+const buttons = document.querySelector(".button-container");
+
+buttons.addEventListener("click", (e) => {
+  regions = createObject(e.target.className);
+  console.log(regions);
+  chartState.continent = regions.countries;
+  drawChart(
+    chartState.continent,
+    regions.category.confirmed,
+    chartState.category,
+    regions.region
+  );
+
+  // create a state object to maintain the current region and category
+});
