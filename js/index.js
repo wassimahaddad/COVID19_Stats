@@ -144,10 +144,10 @@ function statsByCounty(country) {
   singleCountryStats = {};
   for (i = 0; i < covidData.length; i++) {
     if (covidData[i].name === country) {
-      console.log(covidData[i]);
       singleCountryStats = covidData[i];
     }
   }
+  return singleCountryStats;
 }
 
 // Create an Object to display data from ------------------
@@ -209,6 +209,17 @@ function caseByCategory(cat) {
     return deaths;
   }
 }
+// create clickable country list according to selected region
+function listCountriesByRegion(region, name) {
+  const countryContainer = document.querySelector(".country-container");
+  countryContainer.innerHTML = "";
+  for (let i = 0; i < region.length; i++) {
+    const country = document.createElement("h4");
+    country.className = name;
+    country.textContent = region[i];
+    countryContainer.appendChild(country);
+  }
+}
 //Draw chart -------------------------------------------------------------------------
 
 function drawChart(xAxis, yAxis, cat, region) {
@@ -240,6 +251,7 @@ function drawChart(xAxis, yAxis, cat, region) {
 
 const geography = document.querySelector(".geography");
 const stats = document.querySelector(".stats");
+const countries = document.querySelector(".country-container");
 
 geography.addEventListener("click", (e) => {
   regions = createObject(e.target.className);
@@ -256,20 +268,6 @@ geography.addEventListener("click", (e) => {
   listCountriesByRegion(chartState.continent, chartState.contName);
 });
 
-function listCountriesByRegion(region, name) {
-  const countryContainer = document.querySelector(".country-container");
-  countryContainer.innerHTML = "";
-  for (let i = 0; i < region.length; i++) {
-    const link = document.createElement("a");
-    link.href = "#";
-    const country = document.createElement("h4");
-    country.className = name;
-    country.textContent = region[i];
-    countryContainer.appendChild(link);
-    link.appendChild(country);
-  }
-}
-
 stats.addEventListener("click", (e) => {
   chartState.category = e.target.className;
   console.log(e.target.className);
@@ -281,4 +279,9 @@ stats.addEventListener("click", (e) => {
     chartState.category,
     chartState.contName
   );
+});
+
+countries.addEventListener("click", (e) => {
+  const country = statsByCounty(e.target.textContent);
+  console.log(country);
 });
