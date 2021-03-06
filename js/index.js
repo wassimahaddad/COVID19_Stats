@@ -25,7 +25,7 @@ let chartState = {
 };
 //! Functions------------------------------------------------------------------
 
-// Return the continent from the "codeAndRegionArr" array according to the country code --------
+// Return the continent from the "codeAndRegionArr" array according to the country code
 
 function getContinentByCode(code) {
   for (let i = 0; i < codeAndRegionArr.length; i++) {
@@ -50,6 +50,8 @@ function getCovidData() {
         tempObj.deaths = code.data[i].latest_data.deaths;
         tempObj.code = code.data[i].code;
         tempObj.continent = getContinentByCode(code.data[i].code);
+        tempObj.newCases = code.data[i].today.confirmed;
+        tempObj.newDeaths = code.data[i].today.deaths;
 
         covidData.push(tempObj);
       }
@@ -57,7 +59,7 @@ function getCovidData() {
     });
 }
 
-// fetch country list with region--------------------------------------------
+// fetch country list with region-----------------------------------
 
 async function getRegion() {
   const result = await fetch(`${proxy}${countrie_API}`);
@@ -75,7 +77,7 @@ async function getRegion() {
 
 getRegion(); //get all data when page loads
 
-//Reset the content of the stats arrays--------------------------------------------
+//Reset the content of the stats arrays------------------------------
 
 function resetStats() {
   confirmed = [];
@@ -84,7 +86,7 @@ function resetStats() {
   deaths = [];
   world = [];
 }
-// World stats---------------------------------------------------------------------
+// World stats--------------------------------------------------------
 
 function worldStats() {
   resetStats();
@@ -97,7 +99,8 @@ function worldStats() {
   }
 }
 
-// assign the argument the correspoding countries-by-continent array (for use with "segmentByContinent" function)
+// assign the argument the correspoding countries-by-continent array
+//  (for use with "segmentByContinent" function)
 
 function selectContinentArray(arr) {
   console.log(arr);
@@ -119,7 +122,7 @@ function selectContinentArray(arr) {
   return "done";
 }
 
-//fill the stats arrays with data by continent--------------------------------------
+//fill the stats arrays with data by continent--------------
 
 function segmentByContinent(continent) {
   resetStats();
@@ -138,7 +141,7 @@ function segmentByContinent(continent) {
   return "done";
 }
 
-//Stats by single country-------------------------------------------------------------
+//Stats by single country----------------------------------
 
 function statsByCounty(country) {
   for (i = 0; i < covidData.length; i++) {
@@ -244,7 +247,8 @@ function chartColors(str) {
     return "black";
   }
 }
-//Draw chart -------------------------------------------------------------------------
+
+//Draw chart -----------------------------------------------
 
 function drawChart(xAxis, yAxis, cat, region) {
   const ctx = document.querySelector("#statChart").getContext("2d");
@@ -275,12 +279,39 @@ function drawChart(xAxis, yAxis, cat, region) {
   });
 }
 
+//create stats for sigle country
+
+function createCountryStats(country) {
+  document.querySelector(".country-stats-container").innerHTML = "";
+  const singleCountry = document.createElement("h5");
+  singleCountry.textContent = `Stats for ${country.name}:`;
+  const cases = document.createElement("P");
+  cases.textContent = `Total cases: ${country.confirmed}`;
+  const newCases = document.createElement("P");
+  newCases.textContent = `New cases: ${country.newCases}`;
+  const deaths = document.createElement("P");
+  deaths.textContent = `Total deaths: ${country.deaths}`;
+  const newDeaths = document.createElement("P");
+  newDeaths.textContent = `New deaths: ${country.newDeaths}`;
+  const recovered = document.createElement("P");
+  recovered.textContent = `Total recovered: ${country.recovered}`;
+  const critical = document.createElement("P");
+  critical.textContent = `Total critical: ${country.critical}`;
+  countryStats.appendChild(singleCountry);
+  countryStats.appendChild(cases);
+  countryStats.appendChild(newCases);
+  countryStats.appendChild(deaths);
+  countryStats.appendChild(newDeaths);
+  countryStats.appendChild(recovered);
+  countryStats.appendChild(critical);
+}
+
 //!Event Listeners----------------------------------------
 
 const geography = document.querySelector(".geography");
 const stats = document.querySelector(".stats");
 const countries = document.querySelector(".country-container");
-const page = document.querySelector(".page-container");
+const countryStats = document.querySelector(".country-stats-container");
 
 geography.addEventListener("click", (e) => {
   document.querySelector(".chart-container").classList.remove("hidden");
@@ -317,14 +348,5 @@ countries.addEventListener("click", (e) => {
   console.log(country);
   document.querySelector(".chart-container").classList.add("hidden");
   document.querySelector(".country-stats-container").classList.remove("hidden");
+  createCountryStats(country);
 });
-
-function displayStatsByCountry(obj) {
-  // hide chart
-  //build elements
-  const countryStats = document.createElement("div");
-  countryStats.className = "country-stats";
-  stats.append;
-
-  //display content in elements
-}
