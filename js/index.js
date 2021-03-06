@@ -150,33 +150,6 @@ function statsByCounty(country) {
   }
 }
 
-//Draw chart -------------------------------------------------------------------------
-
-function drawChart(xAxis, yAxis, cat, region) {
-  const ctx = document.querySelector("#statChart").getContext("2d");
-  region = region.charAt(0).toUpperCase() + region.slice(1);
-  const chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: "line",
-
-    // The data for our dataset
-    data: {
-      labels: xAxis,
-      datasets: [
-        {
-          label: `COVID19 ${cat} cases in ${region}`,
-          backgroundColor: "rgb(255, 99, 132)",
-          borderColor: "rgb(255, 99, 132)",
-          data: yAxis,
-        },
-      ],
-    },
-
-    // Configuration options go here
-    options: {},
-  });
-}
-
 // Create an Object to display data from ------------------
 
 function createObject(region) {
@@ -221,11 +194,54 @@ function createObject(region) {
   };
 }
 
+// return corresponding case array according to categoey
+function caseByCategory(cat) {
+  if (cat === "confirmed") {
+    return confirmed;
+  }
+  if (cat === "recovered") {
+    return recovered;
+  }
+  if (cat === "critical") {
+    return critical;
+  }
+  if (cat === "deaths") {
+    return deaths;
+  }
+}
+//Draw chart -------------------------------------------------------------------------
+
+function drawChart(xAxis, yAxis, cat, region) {
+  const ctx = document.querySelector("#statChart").getContext("2d");
+  region = region.charAt(0).toUpperCase() + region.slice(1);
+  const chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: "line",
+
+    // The data for our dataset
+    data: {
+      labels: xAxis,
+      datasets: [
+        {
+          label: `COVID19 ${cat} cases in ${region}`,
+          backgroundColor: "rgb(255, 99, 132)",
+          borderColor: "rgb(255, 99, 132)",
+          data: yAxis,
+        },
+      ],
+    },
+
+    // Configuration options go here
+    options: {},
+  });
+}
+
 //!Event Listeners----------------------------------------
 
-const buttons = document.querySelector(".button-container");
+const geography = document.querySelector(".geography");
+const stats = document.querySelector(".stats");
 
-buttons.addEventListener("click", (e) => {
+geography.addEventListener("click", (e) => {
   regions = createObject(e.target.className);
   console.log(regions);
   chartState.continent = regions.countries;
@@ -237,6 +253,32 @@ buttons.addEventListener("click", (e) => {
     chartState.category,
     chartState.contName
   );
+  listCountriesByRegion(chartState.continent, chartState.contName);
+});
 
-  // create a state object to maintain the current region and category
+function listCountriesByRegion(region, name) {
+  const countryContainer = document.querySelector(".country-container");
+  countryContainer.innerHTML = "";
+  for (let i = 0; i < region.length; i++) {
+    const link = document.createElement("a");
+    link.href = "#";
+    const country = document.createElement("h4");
+    country.className = name;
+    country.textContent = region[i];
+    countryContainer.appendChild(link);
+    link.appendChild(country);
+  }
+}
+
+stats.addEventListener("click", (e) => {
+  chartState.category = e.target.className;
+  console.log(e.target.className);
+  chartState.cases = caseByCategory(e.target.className);
+  console.log(chartState.cases);
+  drawChart(
+    chartState.continent,
+    chartState.cases,
+    chartState.category,
+    chartState.contName
+  );
 });
