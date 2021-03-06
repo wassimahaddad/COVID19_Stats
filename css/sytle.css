@@ -5,10 +5,36 @@
 }
 
 #cover {
-  background: url("../img/covid.gif") no-repeat center center/cover;
+  background: white;
   position: absolute;
   height: 100%;
   width: 100%;
+}
+
+.ring {
+  margin-top: 40vh;
+  margin-left: auto;
+  margin-right: auto;
+  border: blanchedalmond 5px solid;
+  border-top: chartreuse 5px solid;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  animation-name: goaround;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards; /**stays where it's at*/
+  animation-timing-function: ease-in;
+}
+
+@keyframes goaround {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .page-container {
