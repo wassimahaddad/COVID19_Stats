@@ -25,7 +25,7 @@ let chartState = {
 };
 
 // ! cover page
-// Display for for 3 seconds until fetch is done
+// Display spinner for 3 seconds until fetch is done
 setTimeout(function () {
   return document.querySelector("#cover").classList.add("hidden");
 }, 3000);
