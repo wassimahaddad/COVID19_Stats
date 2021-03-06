@@ -24,12 +24,6 @@ let chartState = {
   contName: "",
 };
 
-// ! cover page
-// Display spinner for 3 seconds until fetch is done
-setTimeout(function () {
-  return document.querySelector("#cover").classList.add("hidden");
-}, 3000);
-
 //! Functions------------------------------------------------------------------
 
 // Return the continent from the "codeAndRegionArr" array according to the country code
@@ -82,8 +76,6 @@ async function getRegion() {
   getCovidData(); // call covid data fetch
 }
 
-getRegion(); //get all data when page loads
-
 //Reset the content of the stats arrays------------------------------
 
 function resetStats() {
@@ -129,7 +121,7 @@ function selectContinentArray(arr) {
   return "done";
 }
 
-//fill the stats arrays with data by continent--------------
+//fill the stats arrays with data by continent--------------------------
 
 function segmentByContinent(continent) {
   resetStats();
@@ -148,7 +140,7 @@ function segmentByContinent(continent) {
   return "done";
 }
 
-//Stats by single country----------------------------------
+//Stats by single country------------------------------------------------
 
 function statsByCounty(country) {
   for (i = 0; i < covidData.length; i++) {
@@ -158,7 +150,7 @@ function statsByCounty(country) {
   }
 }
 
-// Create an Object to display data from ------------------
+// Create an Object to display data from --------------------------------
 
 function createObject(region) {
   if (region === "world") {
@@ -202,7 +194,7 @@ function createObject(region) {
   };
 }
 
-// return corresponding case array according to categoey
+// return corresponding case array according to categoey -------------------
 function caseByCategory(cat) {
   if (cat === "confirmed" || cat === "Confirmed") {
     return confirmed;
@@ -217,7 +209,7 @@ function caseByCategory(cat) {
     return deaths;
   }
 }
-// create clickable country list according to selected region
+// create clickable country list according to selected region --------------
 function listCountriesByRegion(region, name) {
   const countryContainer = document.querySelector(".country-container");
   countryContainer.innerHTML = "";
@@ -229,7 +221,7 @@ function listCountriesByRegion(region, name) {
   }
 }
 
-//change chart color according to selection
+//change chart color according to selection ---------------------------------
 
 function chartColors(str) {
   if (str === "Asia") {
@@ -255,7 +247,7 @@ function chartColors(str) {
   }
 }
 
-//Draw chart -----------------------------------------------
+//Draw chart ---------------------------------------------------------------
 
 function drawChart(xAxis, yAxis, cat, region) {
   const ctx = document.querySelector("#statChart").getContext("2d");
@@ -286,7 +278,7 @@ function drawChart(xAxis, yAxis, cat, region) {
   });
 }
 
-//create stats for sigle country
+//create stats for sigle country ------------------------------------------
 
 function createCountryStats(country) {
   document.querySelector(".country-stats-container").innerHTML = "";
@@ -312,8 +304,16 @@ function createCountryStats(country) {
   countryStats.appendChild(recovered);
   countryStats.appendChild(critical);
 }
+// ! load page -------------------------------------------------------------
+// Display spinner for 3 seconds until fetch is done
+setTimeout(function () {
+  return document.querySelector("#cover").classList.add("hidden");
+}, 3000);
 
-//!Event Listeners----------------------------------------
+//get all data -------------------------------------------------------------
+getRegion();
+
+//!Event Listeners ---------------------------------------------------------
 
 const geography = document.querySelector(".geography");
 const stats = document.querySelector(".stats");
