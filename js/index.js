@@ -141,13 +141,11 @@ function segmentByContinent(continent) {
 //Stats by single country-------------------------------------------------------------
 
 function statsByCounty(country) {
-  singleCountryStats = {};
   for (i = 0; i < covidData.length; i++) {
     if (covidData[i].name === country) {
-      singleCountryStats = covidData[i];
+      return covidData[i];
     }
   }
-  return singleCountryStats;
 }
 
 // Create an Object to display data from ------------------
@@ -196,16 +194,16 @@ function createObject(region) {
 
 // return corresponding case array according to categoey
 function caseByCategory(cat) {
-  if (cat === "confirmed") {
+  if (cat === "confirmed" || cat === "Confirmed") {
     return confirmed;
   }
-  if (cat === "recovered") {
+  if (cat === "recovered" || cat === "recovered") {
     return recovered;
   }
-  if (cat === "critical") {
+  if (cat === "critical" || cat === "Critical") {
     return critical;
   }
-  if (cat === "deaths") {
+  if (cat === "deaths" || cat === "Deaths") {
     return deaths;
   }
 }
@@ -220,11 +218,41 @@ function listCountriesByRegion(region, name) {
     countryContainer.appendChild(country);
   }
 }
+
+//change chart color according to selection
+
+function chartColors(str) {
+  if (str === "Asia") {
+    return "blueviolet";
+  } else if (str === "Europe") {
+    return "chocolate";
+  } else if (str === "Africa") {
+    return "crimson";
+  } else if (str === "Oceania") {
+    return "magenta";
+  } else if (str === "Americas") {
+    return "darkblue";
+  } else if (str === "World") {
+    return "black";
+  } else if (str === "Confirmed") {
+    return "goldenrod";
+  } else if (str === "Recovered") {
+    return "green";
+  } else if (str === "Critical") {
+    return "red";
+  } else if (str === "Death") {
+    return "black";
+  }
+}
 //Draw chart -------------------------------------------------------------------------
 
 function drawChart(xAxis, yAxis, cat, region) {
   const ctx = document.querySelector("#statChart").getContext("2d");
   region = region.charAt(0).toUpperCase() + region.slice(1);
+  cat = cat.charAt(0).toUpperCase() + cat.slice(1);
+  if (cat === "Deaths") {
+    cat = "Death";
+  }
   const chart = new Chart(ctx, {
     // The type of chart we want to create
     type: "line",
@@ -235,8 +263,8 @@ function drawChart(xAxis, yAxis, cat, region) {
       datasets: [
         {
           label: `COVID19 ${cat} cases in ${region}`,
-          backgroundColor: "rgb(255, 99, 132)",
-          borderColor: "rgb(255, 99, 132)",
+          backgroundColor: chartColors(region),
+          borderColor: chartColors(cat),
           data: yAxis,
         },
       ],
@@ -285,3 +313,9 @@ countries.addEventListener("click", (e) => {
   const country = statsByCounty(e.target.textContent);
   console.log(country);
 });
+
+function displayStatsByCountry(obj) {
+  // hide chart
+  //build elements
+  //display content in elements
+}

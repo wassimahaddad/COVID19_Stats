@@ -70,9 +70,28 @@ button {
   color: darkblue;
 }
 .oceania {
+  color: magenta;
+}
+
+.world {
+  color: orangered;
+}
+
+.confirmed {
+  color: goldenrod;
+}
+
+.recovered {
   color: green;
 }
 
+.critical {
+  color: red;
+}
+
+.deaths {
+  color: black;
+}
 h4 {
   display: inline-block;
   padding: 3px;
