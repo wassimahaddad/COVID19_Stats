@@ -280,8 +280,11 @@ function drawChart(xAxis, yAxis, cat, region) {
 const geography = document.querySelector(".geography");
 const stats = document.querySelector(".stats");
 const countries = document.querySelector(".country-container");
+const page = document.querySelector(".page-container");
 
 geography.addEventListener("click", (e) => {
+  document.querySelector(".chart-container").classList.remove("hidden");
+  document.querySelector(".country-stats-container").classList.add("hidden");
   regions = createObject(e.target.className);
   console.log(regions);
   chartState.continent = regions.countries;
@@ -312,10 +315,16 @@ stats.addEventListener("click", (e) => {
 countries.addEventListener("click", (e) => {
   const country = statsByCounty(e.target.textContent);
   console.log(country);
+  document.querySelector(".chart-container").classList.add("hidden");
+  document.querySelector(".country-stats-container").classList.remove("hidden");
 });
 
 function displayStatsByCountry(obj) {
   // hide chart
   //build elements
+  const countryStats = document.createElement("div");
+  countryStats.className = "country-stats";
+  stats.append;
+
   //display content in elements
 }

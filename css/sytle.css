@@ -8,6 +8,7 @@
   margin-left: auto;
   margin-right: auto;
   font-family: Arial, Helvetica, sans-serif;
+  width: 70vw;
 }
 
 h1 {
@@ -23,6 +24,12 @@ h1 {
   margin-left: auto;
   margin-right: auto;
 }
+
+.country-stats-container {
+  width: 70vw;
+  height: 55vh;
+}
+
 .button-container {
   width: 50vw;
   height: 10vh;
@@ -48,10 +55,11 @@ button {
   margin-right: 5px;
 }
 .country-container {
-  width: 80vw;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 40px;
+  padding: 20px;
 }
 
 .asia {
@@ -92,6 +100,7 @@ button {
 .deaths {
   color: black;
 }
+
 h4 {
   display: inline-block;
   padding: 3px;
@@ -100,4 +109,8 @@ h4 {
 h4:hover {
   background: #ccc;
   cursor: pointer;
+}
+
+.hidden {
+  display: none;
 }
