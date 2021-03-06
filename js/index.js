@@ -23,6 +23,13 @@ let chartState = {
   category: "confirmed",
   contName: "",
 };
+
+// ! cover page
+// Display for for 3 seconds until fetch is done
+setTimeout(function () {
+  return document.querySelector("#cover").classList.add("hidden");
+}, 3000);
+
 //! Functions------------------------------------------------------------------
 
 // Return the continent from the "codeAndRegionArr" array according to the country code
@@ -350,7 +357,3 @@ countries.addEventListener("click", (e) => {
   document.querySelector(".country-stats-container").classList.remove("hidden");
   createCountryStats(country);
 });
-
-setTimeout(function () {
-  return document.querySelector("#cover").classList.add("hidden");
-}, 3000);
