@@ -17,7 +17,12 @@ let critical = []; // a dymanically assigned critical cases array
 let deaths = []; // a dymanically assigned dead cases array
 let singleCountryStats = {}; //a dynamically assigned object with single-country stats
 let regions = [];
-let chartState = { continent: [], category: "confirmed" };
+let chartState = {
+  continent: [],
+  cases: [],
+  category: "confirmed",
+  contName: "",
+};
 //! Functions------------------------------------------------------------------
 
 // Return the continent from the "codeAndRegionArr" array according to the country code --------
@@ -224,11 +229,13 @@ buttons.addEventListener("click", (e) => {
   regions = createObject(e.target.className);
   console.log(regions);
   chartState.continent = regions.countries;
+  chartState.cases = regions.category.confirmed;
+  chartState.contName = regions.region;
   drawChart(
     chartState.continent,
-    regions.category.confirmed,
+    chartState.cases,
     chartState.category,
-    regions.region
+    chartState.contName
   );
 
   // create a state object to maintain the current region and category
