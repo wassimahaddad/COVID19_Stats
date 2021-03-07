@@ -215,9 +215,24 @@ function listCountriesByRegion(region, name) {
   countryContainer.innerHTML = "";
   for (let i = 0; i < region.length; i++) {
     const country = document.createElement("h4");
-    country.className = name;
+    if (name === "world") {
+      const temp = continentByCountry(region[i]);
+      country.className = temp.toLowerCase();
+    } else {
+      country.className = name;
+    }
     country.textContent = region[i];
     countryContainer.appendChild(country);
+  }
+}
+
+//return continent name of given country ----------------------------------
+
+function continentByCountry(country) {
+  for (let i = 0; i < covidData.length; i++) {
+    if (covidData[i].name === country) {
+      return covidData[i].continent;
+    }
   }
 }
 
