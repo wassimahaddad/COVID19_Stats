@@ -58,6 +58,7 @@ h1 {
 }
 
 .chart-container {
+  pointer-events: none;
   display: block;
   position: relative;
   width: 50vw;
