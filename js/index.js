@@ -53,7 +53,6 @@ function getCovidData() {
         tempObj.continent = getContinentByCode(code.data[i].code);
         tempObj.newCases = code.data[i].today.confirmed;
         tempObj.newDeaths = code.data[i].today.deaths;
-
         covidData.push(tempObj);
       }
       console.log(covidData);
@@ -74,6 +73,7 @@ async function getRegion() {
   }
   console.log(codeAndRegionArr);
   getCovidData(); // call covid data fetch
+  document.querySelector("#cover").classList.add("hidden"); //remove spinner
 }
 
 //Reset the content of the stats arrays------------------------------
@@ -320,10 +320,6 @@ function createCountryStats(country) {
   countryStats.appendChild(critical);
 }
 // ! load page -------------------------------------------------------------
-// Display spinner for 3 seconds until fetch is done
-setTimeout(function () {
-  return document.querySelector("#cover").classList.add("hidden");
-}, 3000);
 
 //get all data -------------------------------------------------------------
 getRegion();
